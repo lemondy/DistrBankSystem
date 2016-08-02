@@ -11,7 +11,13 @@ import javax.naming.spi.DirStateFactory.Result;
 /**
  * 
  * @author lemon
- * create table bank(
+ * 
+ * create database Bank;
+ * create database BankA;
+ * create database BankB;
+ * create database BankC;
+ * 
+ * create table user(
  * 	uid string,
  * 	uname string,
  *  idcard string,
@@ -19,7 +25,8 @@ import javax.naming.spi.DirStateFactory.Result;
  * 	sex byte,
  * 	age smallint,
  * 	phoneNumber string,
- * 	address	string
+ * 	address	string,
+ *  money numeric      //余额
  * );
  */
 
@@ -52,7 +59,7 @@ public class DBManager {
 		try {
 			statement = connection.createStatement();
 			rs = statement.executeQuery(sql);
-			
+			statement.close();
 			connection.close();
 		} catch (Exception e) {
 			// TODO: handle exception
@@ -73,5 +80,9 @@ public class DBManager {
 			System.out.println("数据库更新失败");
 		}
 		return count;
+	}
+	
+	public static void close(){
+		
 	}
 }

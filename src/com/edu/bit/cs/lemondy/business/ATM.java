@@ -1,11 +1,9 @@
 package com.edu.bit.cs.lemondy.business;
 
-import java.awt.datatransfer.Transferable;
-import java.io.Console;
-import java.sql.Savepoint;
 import java.util.Scanner;
 
 import com.edu.bit.cs.lemondy.entity.LoginStatus;
+import com.edu.bit.cs.lemondy.entity.OPERATIONS;
 
 public class ATM {
 	
@@ -20,23 +18,37 @@ public class ATM {
 	public static void mainUI(String card){
 		System.out.println(USAGE);
 		String step = scanner.nextLine();
+		OPERATIONS op = OPERATIONS.DEFAULT;
 		while(!"5".equals(step)){
 			switch(step){
 			case "1":
-				ZooKeeper.queryMoney();
+				ZooKeeper.queryMoney(card);
+				op = OPERATIONS.QUERY;
 				break;
 			case "2":
-				ZooKeeper.withDraw();
+				System.out.println("请输入取款金额：");
+				int money = scanner.nextInt(); 
+				ZooKeeper.withDraw(card, money);
+				op = OPERATIONS.WITHDRAW;
 				break;
 			case "3":
-				ZooKeeper.transferMoney();
+				System.out.println("请输入转入账号：");
+				String other_card = scanner.next();
+				System.out.println("请输入转账金额：");
+				int trans_money = scanner.nextInt();
+				ZooKeeper.transferMoney(card, other_card, trans_money);
+				op= OPERATIONS.TRANSFER;
 				break;
 			case "4":
-				ZooKeeper.save();
+				System.out.println("请输入存款金额：");
+				int save_money = scanner.nextInt();
+				ZooKeeper.save(card, save_money);
+				op = OPERATIONS.SAVE;
 				break;
 				default:
 					break;
 			}
+			ZooKeeper.writeLog(op);
 			System.out.println(USAGE);
 			step = scanner.nextLine();
 		}
